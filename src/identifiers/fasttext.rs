@@ -119,6 +119,9 @@ impl FastText {
             .map(|line| {
                 // identify
                 let id = self.identify(line.as_str());
+                // let id = Ok(Some(Identification { label: Fr, prob: 0.9978297 }))      ;
+                
+                // println!("ID: {:?}", id);
 
                 // add to byte count for document-level identification
                 if let Ok(ref ide) = id {
@@ -153,16 +156,37 @@ impl FastText {
 
 impl identifier::Identifier<&str> for FastText {
     fn identify(&self, sentence: &str) -> Result<Option<Identification>, Error> {
-        let prediction = self
-            .predictor
-            .predict(sentence, 1, self.threshold)
-            .map_err(Error::FastText)?;
+        // let prediction = self
+        //     .predictor
+        //     .predict(sentence, 1, self.threshold)
+        //     .map_err(Error::FastText)?;
         // let prediction = prediction.sort_by(|a, b| a.prob.partial_cmp(&b.prob)).iter().take(1);
-
+        let mut count = 0;
+        for char in sentence.chars() {
+            let charNum = char as u32;
+            if (charNum >= 3585 && charNum <= 3656) {
+                count += 1;
+            }
+        }
+        let mut probabilityThai: f32 = 0.0;
+        let sentenceCharCount = sentence.chars().count();
+        if (sentenceCharCount != 0) {
+            // println("{}", sentence.len())
+            probabilityThai = (count as f32/sentenceCharCount as f32) as f32;
+        }
+        if (probabilityThai > 0.0) {
+            println!("prob thai: {}, {}, {}", probabilityThai, count, sentence.len());
+            println!("sentence: {}, {}", probabilityThai, sentence);
+            if (probabilityThai > 0.5) {
+            }
+        }
+        // Ok(Some(Identification::new(Lang::Th, probabilityThai)))
         if !prediction.is_empty() {
             // TODO: There should be a solution without resorting to clone()
-            let prediction = prediction[0].clone();
-            Ok(Some(prediction.into()))
+            // let prediction = prediction[0].clone();
+            // println!("prediction {:?}", prediction);
+            // Ok(Some(prediction.into()))
+            Ok(Some(Identification::new(Lang::Th, 1.0)))
         } else {
             Ok(None)
         }
