@@ -174,22 +174,22 @@ impl identifier::Identifier<&str> for FastText {
             // println("{}", sentence.len())
             probabilityThai = (count as f32/sentenceCharCount as f32) as f32;
         }
-        if (probabilityThai > 0.0) {
-            println!("prob thai: {}, {}, {}", probabilityThai, count, sentence.len());
-            println!("sentence: {}, {}", probabilityThai, sentence);
-            if (probabilityThai > 0.5) {
-            }
-        }
-        // Ok(Some(Identification::new(Lang::Th, probabilityThai)))
-        if !prediction.is_empty() {
-            // TODO: There should be a solution without resorting to clone()
-            // let prediction = prediction[0].clone();
-            // println!("prediction {:?}", prediction);
-            // Ok(Some(prediction.into()))
-            Ok(Some(Identification::new(Lang::Th, 1.0)))
-        } else {
-            Ok(None)
-        }
+        // if (probabilityThai > 0.0) {
+        //     println!("prob thai: {}, {}, {}", probabilityThai, count, sentence.len());
+        //     println!("sentence: {}, {}", probabilityThai, sentence);
+        //     if (probabilityThai > 0.5) {
+        //     }
+        // }
+        Ok(Some(Identification::new(Lang::Th, probabilityThai)))
+        // if !prediction.is_empty() {
+        //     // TODO: There should be a solution without resorting to clone()
+        //     // let prediction = prediction[0].clone();
+        //     // println!("prediction {:?}", prediction);
+        //     // Ok(Some(prediction.into()))
+        //     Ok(Some(Identification::new(Lang::Th, 1.0)))
+        // } else {
+        //     Ok(None)
+        // }
     }
 }
 
